@@ -1,0 +1,36 @@
+behaviors:
+  Boxing:
+    trainer_type: ppo
+    max_steps: 5000000
+    time_horizon: 64
+    summary_freq: 10000
+    hyperparameters:
+      batch_size: 1024
+      buffer_size: 20480
+      learning_rate: 0.0003
+    reward_signals:
+      extrinsic:
+        strength: 1.0
+        gamma: 0.99
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+
+  BoxerOpponent:
+    trainer_type: ppo
+    max_steps: 5000000
+    time_horizon: 64
+    summary_freq: 10000
+    hyperparameters:
+      batch_size: 1024
+      buffer_size: 20480
+      learning_rate: 0.0003
+    reward_signals:
+      extrinsic:
+        strength: 1.0
+        gamma: 0.99
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
