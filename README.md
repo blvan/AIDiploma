@@ -1,36 +1,52 @@
-![Ragdoll Screenshot](/docs/CombinedAgent.png)
+![Boxing Agent Screenshot](/docs/BoxingAgentOverview.png)
 
-# Ragdoll Trainer Unity Project
+# Boxing Agent Unity Project
 
-Active ragdoll training with Unity ML-Agents (PyTorch). 
+A reinforcement learning project using Unity ML-Agents Toolkit to train a humanoid agent capable of performing boxing attacks and blocks in a 3D environment.
 
-## Ragdoll Agent
+## Agent
 
-Based on [walker example](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Learning-Environment-Examples.md)
+Based on the [Walker example](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Learning-Environment-Examples.md) from ML-Agents Toolkit, this project extends the idea to a close-combat scenario.
 
-The Robot Kyle model from the Unity assets store is used for the ragdoll.
+The agent is trained using the PPO algorithm and performs offensive and defensive actions in response to the opponent's position and behavior.
 
-![RobotKyleBlend Image](/docs/RobotKyleBlend.png)
+![Agent Screenshot](/docs/BoxingAgentCloseup.png)
 
 ### Features:
 
-* Default Robot Kyle rig replaced with a new rig created in blender. FBX and blend file included.
+* Custom boxing rig and animation controller created with Unity Animator.
+* Discrete action space with attack/block/movement combinations.
+* Reward shaping for hits, blocks, distance control, and staying upright.
+* Configurable via YAML (training hyperparameters, curriculum, curiosity).
 
-* Heuristic function inlcuded to drive the joints by user input (for development testing only).
+### Training Flow:
 
-* Added stabilizer to hips and spine. The stabilizer applies torque to help ragdoll balance.
+* Stage 1: BoxingAgent with `earlyTraining = true` — learns to stay upright and move.
+* Stage 2: BoxingAgent with `earlyTraining = false` — learns to attack and block dynamically.
+* Stage 3 (optional): Self-play mode — trains against a clone of itself or a previously saved policy.
 
-* Added "earlyTraining" bool for initial balance/walking toward target.
+### Files Included:
 
-* Added WallsAgent prefab for navigating around obstacles (using Ray Perception Sensor 3D).
+* `BoxingAgent.cs` – main agent logic
+* `WalkerAgent.cs` – inherited movement logic
+* `AttackHitbox.cs` – manages hit registration
+* `AnimScript.cs` – synchronizes logic and animation states
+* `Stabilizer.cs` – balance control
+* `Walker.yaml` – training configuration
+* Prefabs: Agent, opponent, target controller
+* Example scenes: Flat arena, block obstacle arena
 
-* Added StairsAgent prefab for navigating small and large steps.
+---
 
-* Added curiosity to yaml to improve walls and stairs training.
+### Requirements:
 
-### Training Process (where bool in parenthesis refers to "earlyTraining" setting): 
+* Unity 2022.x
+* ML-Agents Toolkit (v2.3+)
+* Python 3.8+
+* PyTorch backend (via `mlagents-learn`)
 
-* Walking: WalkerAgent (true) -> WalkerAgent (false)
-* Walls: WalkerAgent (true) -> WalkerAgent (false) -> WallsAgent (false)
-* Stairs: WalkerAgent (true) -> StairsAgent (true) -> StairsAgent (false)
+---
 
+### License
+
+MIT. Free to use for educational or research purposes.
